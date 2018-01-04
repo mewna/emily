@@ -24,7 +24,7 @@ defmodule Emily.Ratelimiter do
   Starts the ratelimiter.
   """
   @spec start_link() :: on_start
-  def start_link do
+  def start_link([]) do
     #:ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
