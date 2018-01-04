@@ -24,17 +24,8 @@ defmodule Emily.Ratelimiter do
   Starts the ratelimiter.
   """
   def start_link(_args) do
-    #:ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
-
-  @doc """
-  Empties all buckets, voiding any saved ratelimit values.
-  """
-  #@spec empty_buckets() :: :ok
-  #def empty_buckets do
-  #  :ets.delete_all_objects(:ratelimit_buckets)
-  #end
 
   def handle_call({:queue, request, original_from}, from, state) do
     retry_time = 
