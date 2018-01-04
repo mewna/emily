@@ -60,6 +60,8 @@ defmodule Emily.Bucket do
           # Gotta wait :<
           wait_time
         end
+      [{route, :undefined, _reset_time, _latency}] ->
+        nil
       [{route, remaining, _reset_time, _latency}] ->
         # We have requests remaining, might as well send
         update_bucket(route, remaining - 1)
