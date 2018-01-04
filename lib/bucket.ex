@@ -63,6 +63,11 @@ defmodule Emily.Bucket do
       [{route, :undefined, _reset_time, _latency}] ->
         nil
       [{route, remaining, _reset_time, _latency}] ->
+        remaining = if is_binary remaining do
+            remaining |> String.to_integer
+          else
+            remaining
+          end
         # We have requests remaining, might as well send
         update_bucket(route, remaining - 1)
         nil
