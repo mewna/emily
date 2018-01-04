@@ -9,11 +9,24 @@ defmodule Emily.Bucket do
     Redis.q ["SET", "route:#{route}:latency", latency]
   end
 
+  defp str_to_int(str) do
+    unless str == :undefined do
+      if is_binary str do
+        str |> String.to_integer
+      else
+        str
+      end
+    else
+      :undefined
+    end
+  end
+
   defp get_bucket(route) do
     {:ok, remaining} = Redis.q ["GET", "route:#{route}:remaining"]
     {:ok, reset_time} = Redis.q ["GET", "route:#{route}:reset_time"]
     {:ok, latency} = Redis.q ["GET", "route:#{route}:latency"]
-    {route, remaining, reset_time, latency}
+
+    {route, str_to_int(remaining), str_to_int(reset_time), str_to_int(latency)}
   end
 
   def lookup_bucket(route) do
@@ -63,11 +76,6 @@ defmodule Emily.Bucket do
       [{route, :undefined, _reset_time, _latency}] ->
         nil
       [{route, remaining, _reset_time, _latency}] ->
-        remaining = if is_binary remaining do
-            remaining |> String.to_integer
-          else
-            remaining
-          end
         # We have requests remaining, might as well send
         update_bucket(route, remaining - 1)
         nil
