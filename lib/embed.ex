@@ -6,7 +6,7 @@ defmodule Emily.Embed do
   @zwsp <<0x20, 0x0E>>
 
   def embed do
-    %{}
+    %{"color": :rand.uniform(0xFFFFFF)}
   end
 
   def title(embed, title) when is_map(embed) do
