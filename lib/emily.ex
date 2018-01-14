@@ -33,6 +33,11 @@ defmodule Emily do
     |> handle
   end
 
+  def edit_message(channel_id, message_id, [content: c, embed: e]) do
+    request(:patch, Util.channel_message(channel_id, message_id), %{content: c, embed: e})
+    |> handle
+  end
+
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
   def request(method, route, body \\ "", options \\ []) do
     request = %{
