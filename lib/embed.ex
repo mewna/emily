@@ -3,6 +3,8 @@ defmodule Emily.Embed do
   Utility methods for pipe-building embeds
   """
 
+  @zwsp <<0x20, 0x0E>>
+
   def embed do
     %{}
   end
@@ -31,6 +33,16 @@ defmodule Emily.Embed do
             end
     fields = embed["fields"]
     embed |> Map.put("fields", fields ++ [%{"name" => name, "value" => value, "inline" => inline}])
+  end
+
+  def field(embed, inline) when is_map(embed) and is_boolean(inline) do
+    embed = unless Map.has_key?(embed, "fields") do
+              embed |> Map.put("fields", [])
+            else
+              embed
+            end
+    fields = embed["fields"]
+    embed |> Map.put("fields", fields ++ [%{"name" => @zwsp, "value" => @zwsp, "inline" => inline}])
   end
 
   def thumbnail(embed, url) when is_map(embed) do
