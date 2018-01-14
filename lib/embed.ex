@@ -21,6 +21,10 @@ defmodule Emily.Embed do
     embed |> Map.put("url", url)
   end
 
+  def image(embed, url) when is_map(embed) do
+    embed |> Map.put("url", url)
+  end
+
   def color(embed, color) when is_map(embed) do
     embed |> Map.put("color", color)
   end
