@@ -28,7 +28,7 @@ defmodule Emily do
     |> handle
   end
 
-  def edit_message(channel_id, message_id, content) do
+  def edit_message(channel_id, message_id, content) when is_binary(content) do
     request(:patch, Util.channel_message(channel_id, message_id), %{content: content})
     |> handle
   end
