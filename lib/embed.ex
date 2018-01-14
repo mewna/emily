@@ -30,7 +30,7 @@ defmodule Emily.Embed do
   end
 
   def footer(embed, text, icon_url \\ nil) when is_map(embed) do
-    embed |> Map.put("footer", %{"text" => footer, "icon_url" => icon_url})
+    embed |> Map.put("footer", %{"text" => text, "icon_url" => icon_url})
   end
 
   def field(embed, name, value, inline) when is_map(embed) and is_boolean(inline) do
