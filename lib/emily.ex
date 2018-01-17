@@ -10,6 +10,30 @@ defmodule Emily do
     do: {:ok, Poison.decode!(body)}
   end
 
+  # Helper methods so that the REST functions can be used in chained function calls, ex.
+  # embed()
+  # |> title("Test embed")
+  # |> desc("This is a test of the emergency embed system")
+  # |> color(0xFFFFFF)
+  # |> Emily.create_message(channel_id
+
+  def create_message(content, channel_id) when is_binary(content) and is_integer(channel_id) do
+    request(:post, Util.channel_messages(channel_id), %{content: content, tts: false})
+    |> handle
+  end
+
+  def create_message(embed, channel_id) when is_map(embed) and is_integer(channel_id) do
+    request(:post, Util.channel_messages(channel_id), %{content: "", embed: embed, tts: false})
+    |> handle
+  end
+
+  def create_message({content, embed}, channel_id) when is_binary(content) and is_map(embed) and is_integer(channel_id) do
+    request(:post, Util.channel_messages(channel_id), %{content: content, embed: embed, tts: false})
+    |> handle
+  end
+
+  # Ported Nostrum stuff
+
   # Sending regular messages
   def create_message(channel_id, content) when is_binary(content) do
     request(:post, Util.channel_messages(channel_id), %{content: content, tts: false})
