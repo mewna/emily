@@ -47,6 +47,7 @@ defmodule Emily do
   end
 
   # Files
+  # TODO: This is broken, see the latest PRs on Nostrum for how it was fixed
   def create_message(channel_id, [file_name: c, file: f]) do
     request_multipart(:post, Util.channel_messages(channel_id), %{content: c, file: f, tts: false})
     |> handle
