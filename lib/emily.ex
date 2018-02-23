@@ -35,20 +35,20 @@ defmodule Emily do
   # Ported Nostrum stuff
 
   # Sending regular messages
-  def create_message(channel_id, content) when is_binary(content) do
+  def n_create_message(channel_id, content) when is_binary(content) do
     request(:post, Util.channel_messages(channel_id), %{content: content, tts: false})
     |> handle
   end
 
   # Embeds
-  def create_message(channel_id, [content: c, embed: e]) do
+  def n_create_message(channel_id, [content: c, embed: e]) do
     request(:post, Util.channel_messages(channel_id), %{content: c, embed: e, tts: false})
     |> handle
   end
 
   # Files
   # TODO: This is broken, see the latest PRs on Nostrum for how it was fixed
-  def create_message(channel_id, [file_name: c, file: f]) do
+  def n_create_message(channel_id, [file_name: c, file: f]) do
     request_multipart(:post, Util.channel_messages(channel_id), %{content: c, file: f, tts: false})
     |> handle
   end
