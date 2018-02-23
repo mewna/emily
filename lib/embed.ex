@@ -3,7 +3,7 @@ defmodule Emily.Embed do
   Utility methods for pipe-building embeds
   """
 
-  @zwsp <<0x20, 0x0E>>
+  @zwsp <<0x20, 0x0B>>
 
   def embed do
     %{"color" => :rand.uniform(0xFFFFFF)}
