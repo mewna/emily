@@ -52,25 +52,12 @@ defmodule Emily.Bucket do
   def get_ratelimit_timeout(route) do
     case lookup_bucket(route) do
       [] ->
-        # No ratelimit data at all
-        :none
-      [{route, remaining, reset_time, latency}] when remaining <= 0 ->
-        update_bucket(route, remaining - 1)
-        wait_time = reset_time - Util.now + latency
-        if wait_time <= 0 do
-          # Wait time over, delete the bucket and send
-          delete_bucket(route)
-          nil
-        else
-          # Gotta wait :<
-          wait_time
-        end
-      [{route, :undefined, _reset_time, _latency}] ->
-        nil
-      [{route, remaining, _reset_time, _latency}] ->
-        # We have requests remaining, might as well send
-        update_bucket(route, remaining - 1)
-        nil
+        :now
+      [{route, remaining, _reset_time, _latency}] when remaining > 0 ->
+        update_remaining(route, remaining - 1)
+        :now
+      [{_route, _remaining, reset_time, latency}] ->
+        reset_time - Util.now + latency
     end
   end
 end

@@ -33,16 +33,26 @@ defmodule Emily.Ratelimiter do
       |> major_parameter
       |> Bucket.get_ratelimit_timeout
 
+    #case retry_time do
+    #  # No wait time, delegate to task
+    #  nil ->
+    #    Task.start(fn ->
+    #      GenServer.reply(original_from || from, do_request(request))
+    #    end)
+    #  # No rl data, block requests until rl data obtained
+    #  :none ->
+    #    GenServer.reply(original_from || from, do_request(request))
+    #  # Wait time found, delegate to task to retry
+    #  time ->
+    #    Task.start(fn ->
+    #      wait_for_timeout(request, time, original_from || from)
+    #    end)
+    #end
     case retry_time do
-      # No wait time, delegate to task
-      nil ->
-        Task.start(fn ->
-          GenServer.reply(original_from || from, do_request(request))
-        end)
-      # No rl data, block requests until rl data obtained
-      :none ->
+      :now ->
         GenServer.reply(original_from || from, do_request(request))
-      # Wait time found, delegate to task to retry
+      time when time < 0 ->
+        GenServer.reply(original_from || from, do_request(request))
       time ->
         Task.start(fn ->
           wait_for_timeout(request, time, original_from || from)
@@ -74,11 +84,13 @@ defmodule Emily.Ratelimiter do
 
     latency = abs(origin_timestamp - Util.now)
 
-    if global_limit do
-      update_global_bucket(route, 0, retry_after, latency)
-    else
-      update_bucket(route, remaining, reset, latency)
-    end
+    #if global_limit do
+    #  update_global_bucket(route, 0, retry_after, latency)
+    #else
+    #  update_bucket(route, remaining, reset, latency)
+    #end
+    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
+    if reset, do: update_bucket(route, remaining, reset, latency)
 
     response
   end
