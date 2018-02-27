@@ -17,13 +17,13 @@ defmodule Emily do
   # |> color(0xFFFFFF)
   # |> Emily.create_message(channel_id)
 
-  def create_message(content, channel_id) when is_binary(content) do
-    request(:post, Util.channel_messages(channel_id), %{content: content, tts: false})
+  def create_message(embed, channel_id) when is_map(embed) do
+    request(:post, Util.channel_messages(channel_id), %{content: "", embed: embed, tts: false})
     |> handle
   end
 
-  def create_message(embed, channel_id) when is_map(embed) do
-    request(:post, Util.channel_messages(channel_id), %{content: "", embed: embed, tts: false})
+  def create_message(content, channel_id) when is_binary(content) do
+    request(:post, Util.channel_messages(channel_id), %{content: content, tts: false})
     |> handle
   end
 
