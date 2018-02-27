@@ -54,7 +54,7 @@ defmodule Emily.Bucket do
       [] ->
         :now
       [{route, remaining, _reset_time, _latency}] when remaining > 0 ->
-        update_remaining(route, remaining - 1)
+        update_bucket(route, remaining - 1)
         :now
       [{_route, _remaining, reset_time, latency}] ->
         reset_time - Util.now + latency

@@ -27,6 +27,10 @@ defmodule Emily.Ratelimiter do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
+  def init(args) do
+    {:ok, args}
+  end
+
   def handle_call({:queue, request, original_from}, from, state) do
     retry_time = 
       request.route
