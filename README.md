@@ -9,7 +9,7 @@ original.
 ```elixir
 def deps do
   [
-    {:emily, github: "queer/emily"}
+    {:emily, github: "mewna/emily"}
   ]
 end
 ```
