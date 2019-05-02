@@ -145,7 +145,7 @@ defmodule Emily.Ratelimiter do
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         {:ok}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, %{status_code: status_code, message: Poison.decode!(body)}}
+        {:error, %{status_code: status_code, message: Jason.decode!(body)}}
     end
   end
 end

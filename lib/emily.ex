@@ -7,7 +7,7 @@ defmodule Emily do
 
   def handle(payload) do
     with {:ok, body} <- payload,
-    do: {:ok, Poison.decode!(body)}
+    do: {:ok, Jason.decode!(body)}
   end
 
   # Helper methods so that the REST functions can be used in chained function calls, ex.
