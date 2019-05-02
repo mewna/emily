@@ -21,8 +21,8 @@ defmodule Emily.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 0.13"},
-      {:poison, "~> 3.1"},
+      {:httpoison, "~> 1.5"},
+      {:jason, "~> 1.1"},
       {:lace, github: "queer/lace"},
     ]
   end
